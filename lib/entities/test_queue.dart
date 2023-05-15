@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:db_benchmark/benchmarks/objectbox_benchmark.dart' as obx;
 import 'package:db_benchmark/benchmarks/realm_benchmark.dart' as rlm;
+import 'package:db_benchmark/benchmarks/isar_benchmark.dart' as isr;
 import 'package:db_benchmark/entities/test_item.dart';
 
 class TestQueue {
@@ -9,14 +10,19 @@ class TestQueue {
     return {
       'OBX inputSync': null,
       'RLM inputSync': null,
+      'ISR inputSync': null,
       'OBX inputManySync': null,
       'RLM inputManySync': null,
+      'ISR inputManySync': null,
       'OBX readAll': null,
       'RLM readAll': null,
+      'ISR readAll': null,
       'OBX testDateQuery': null,
       'RLM testDateQuery': null,
+      'ISR testDateQuery': null,
       'OBX testRemoveQuery': null,
       'RLM testRemoveQuery': null,
+      'ISR testRemoveQuery': null,
     };
   }
 
@@ -33,12 +39,20 @@ class TestQueue {
         functionName: 'RLM inputSync',
       ),
       TestItem(
+        testFuncion: isr.testInputSync,
+        functionName: 'ISR inputSync',
+      ),
+      TestItem(
         testFuncion: obx.testInputManySync,
         functionName: 'OBX inputManySync',
       ),
       TestItem(
         testFuncion: rlm.testInputManySync,
         functionName: 'RLM inputManySync',
+      ),
+      TestItem(
+        testFuncion: isr.testInputManySync,
+        functionName: 'ISR inputManySync',
       ),
       TestItem(
         testFuncion: obx.testReadAll,
@@ -49,6 +63,10 @@ class TestQueue {
         functionName: 'RLM readAll',
       ),
       TestItem(
+        testFuncion: isr.testReadAll,
+        functionName: 'ISR readAll',
+      ),
+      TestItem(
         testFuncion: obx.testDateQuery,
         functionName: 'OBX testDateQuery',
       ),
@@ -57,12 +75,20 @@ class TestQueue {
         functionName: 'RLM testDateQuery',
       ),
       TestItem(
+        testFuncion: isr.testDateQuery,
+        functionName: 'ISR testDateQuery',
+      ),
+      TestItem(
         testFuncion: obx.testRemoveQuery,
         functionName: 'OBX testRemoveQuery',
       ),
       TestItem(
         testFuncion: rlm.testRemoveQuery,
         functionName: 'RLM testRemoveQuery',
+      ),
+      TestItem(
+        testFuncion: isr.testRemoveQuery,
+        functionName: 'ISR testRemoveQuery',
       ),
     ]);
 

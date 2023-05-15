@@ -25,10 +25,10 @@ int testInputSync(int count) {
 int testInputManySync(int count) {
   realm.write(() => realm.deleteAll<TestEntityRealm>());
 
-  List<TestEntityRealm> pins = [];
+  List<TestEntityRealm> entities = [];
 
   for (int i = 0; i < count; i++) {
-    pins.add(
+    entities.add(
       TestEntityRealm(
         i,
         i.toString(),
@@ -39,7 +39,7 @@ int testInputManySync(int count) {
 
   final startTime = DateTime.now();
 
-  realm.write(() => realm.addAll(pins));
+  realm.write(() => realm.addAll(entities));
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }

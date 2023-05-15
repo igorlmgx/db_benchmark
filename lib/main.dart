@@ -1,5 +1,6 @@
 // ignore_for_file: dead_code
 
+import 'package:db_benchmark/databases/isar.dart';
 import 'package:db_benchmark/databases/objectbox.dart';
 import 'package:db_benchmark/entities/test_queue.dart';
 import 'package:db_benchmark/presentation/bloc/benchmark_bloc.dart';
@@ -7,8 +8,10 @@ import 'package:db_benchmark/presentation/screens/benchmark_plain.dart';
 import 'package:db_benchmark/presentation/screens/benchmark_with_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isar/isar.dart';
 
 late ObjectBox objectboxDB;
+late Isar isar;
 
 void main() async {
   await Future.delayed(const Duration(seconds: 6));
@@ -16,6 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   objectboxDB = await ObjectBox.create();
+  isar = await openIsar();
 
   runApp(const MyApp());
 }

@@ -1,33 +1,33 @@
-import 'package:db_benchmark/entities/test_entity_obx.dart';
+import 'package:db_benchmark/entities/test_entity_isar.dart';
 import 'package:db_benchmark/main.dart';
-import 'package:db_benchmark/objectbox.g.dart';
-
-final box = objectboxDB.store.box<TestEntityOBX>();
+import 'package:isar/isar.dart';
 
 int testInputSync(int count) {
-  box.removeAll();
+  isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
   final startTime = DateTime.now();
 
-  for (int i = 0; i < count; i++) {
-    box.put(
-      TestEntityOBX(
-        houseId: i.toString(),
-        dateTime: startTime.add(Duration(seconds: i)),
-      ),
-    );
-  }
+  isar.writeTxnSync(() {
+    for (int i = 0; i < count; i++) {
+      isar.testEntityIsars.putSync(
+        TestEntityIsar(
+          houseId: i.toString(),
+          dateTime: startTime.add(Duration(seconds: i)),
+        ),
+      );
+    }
+  });
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }
 
 int testInputManySync(int count) {
-  box.removeAll();
+  isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
 
-  List<TestEntityOBX> entities = [];
+  List<TestEntityIsar> entities = [];
 
   for (int i = 0; i < count; i++) {
     entities.add(
-      TestEntityOBX(
+      TestEntityIsar(
         houseId: i.toString(),
         dateTime: DateTime.now(),
       ),
@@ -36,18 +36,18 @@ int testInputManySync(int count) {
 
   final startTime = DateTime.now();
 
-  box.putMany(entities);
+  isar.writeTxnSync(() => isar.testEntityIsars.putAllSync(entities));
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }
 
 int testReadAll(int count) {
-  box.removeAll();
+  isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
   testInputManySync(count);
 
   final startTime = DateTime.now();
 
-  box.getAll();
+  isar.testEntityIsars.where().findAll();
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }
@@ -57,14 +57,7 @@ int testDateQuery(int count) {
 
   final startTime = DateTime.now();
 
-  final query = box
-      .query(TestEntityOBX_.dateTime
-          .lessOrEqual(DateTime.now().millisecondsSinceEpoch))
-      .build();
-
-  query.find();
-
-  query.close();
+  isar.testEntityIsars.filter().dateTimeLessThan(startTime).findAllSync();
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }
@@ -74,14 +67,9 @@ int testRemoveQuery(int count) {
 
   final startTime = DateTime.now();
 
-  final query = box
-      .query(TestEntityOBX_.dateTime
-          .lessOrEqual(DateTime.now().millisecondsSinceEpoch))
-      .build();
+  final query = isar.testEntityIsars.filter().dateTimeLessThan(startTime);
 
-  query.remove();
-
-  query.close();
+  isar.writeTxnSync(() => query.deleteAllSync());
 
   return DateTime.now().difference(startTime).inMilliseconds;
 }

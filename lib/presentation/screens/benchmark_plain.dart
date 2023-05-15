@@ -47,7 +47,7 @@ class BenchmarkPlain extends StatelessWidget {
           for (int i = 0; i < testResults.length; i++)
             Padding(
               padding: EdgeInsets.only(
-                bottom: i % 2 == 0 ? 0 : 10,
+                bottom: i % 3 == 2 ? 10 : 0,
               ),
               child: Text(testResults[i]),
             ),
