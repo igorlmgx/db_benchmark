@@ -25,14 +25,12 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
   }
 
   void runNextTest(BenchmarkBloc bloc) {
-    if (bloc.state is! BenchmarkFailed) {
-      bloc.add(
-        RunBenchmark(
-          testFunction: _queue.first.testFuncion,
-          functionName: _queue.first.functionName,
-        ),
-      );
-    }
+    bloc.add(
+      RunBenchmark(
+        testFunction: _queue.first.testFuncion,
+        functionName: _queue.first.functionName,
+      ),
+    );
   }
 
   @override
@@ -49,6 +47,24 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
           } else {
             benchmarkBloc.add(FinishBenchmark());
           }
+        }
+
+        if (state is BenchmarkFailed) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Error'),
+              content: Text(state.errorMessage),
+              actions: [
+                TextButton(
+                  child: const Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -93,7 +109,6 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-              if (state is BenchmarkFailed) Text(state.errorMessage),
             ],
           ),
         );

@@ -23,7 +23,6 @@ Future<int> testInputSync(int count) async {
 
   timer.stop();
   await sharedPreferences.clear();
-  await Future.delayed(const Duration(seconds: 1));
   return timer.elapsedMilliseconds;
 }
 
@@ -120,7 +119,7 @@ Future<int> testRemoveQuery(int count) async {
 
   await sharedPreferences.setString(
     sharedPreferencesKey,
-    jsonEncode(entities),
+    jsonEncode(updatedEntities),
   );
 
   timer.stop();

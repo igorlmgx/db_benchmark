@@ -66,17 +66,19 @@ class BenchmarkBloc extends Bloc<BenchmarkEvent, BenchmarkState> {
     );
 
     int totalTime = 0;
+    try {
+      for (int i = 0; i < state.iterations; i++) {
+        await Future.delayed(const Duration(seconds: 2));
 
-    for (int i = 0; i < state.iterations; i++) {
-      await Future.delayed(const Duration(milliseconds: 50));
-
-      try {
         totalTime += await event.testFunction(state.count);
-      } catch (e) {
-        print('ERROR: ${e.toString()}');
+
+        benchmarks.update(
+          functionName,
+          (value) => 'Running ${i + 1}/${state.iterations}',
+        );
+
         emit(
-          BenchmarkFailed(
-            errorMessage: e.toString(),
+          BenchmarkRunning(
             benchmarkResults: benchmarks,
             count: state.count,
             iterations: state.iterations,
@@ -84,28 +86,25 @@ class BenchmarkBloc extends Bloc<BenchmarkEvent, BenchmarkState> {
         );
       }
 
-      benchmarks.update(
-        functionName,
-        (value) => 'Running ${i + 1}/${state.iterations}',
-      );
+      benchmarks[functionName] = '${totalTime / state.iterations} ms';
 
       emit(
-        BenchmarkRunning(
+        BenchmarkReady(
+          benchmarkResults: benchmarks,
+          count: state.count,
+          iterations: state.iterations,
+        ),
+      );
+    } catch (e) {
+      print('ERROR: ${e.toString()}');
+      emit(
+        BenchmarkFailed(
+          errorMessage: e.toString(),
           benchmarkResults: benchmarks,
           count: state.count,
           iterations: state.iterations,
         ),
       );
     }
-
-    benchmarks[functionName] = '${totalTime / state.iterations} ms';
-
-    emit(
-      BenchmarkReady(
-        benchmarkResults: benchmarks,
-        count: state.count,
-        iterations: state.iterations,
-      ),
-    );
   }
 }
