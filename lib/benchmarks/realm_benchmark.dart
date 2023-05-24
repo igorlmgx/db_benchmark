@@ -4,26 +4,29 @@ import 'package:realm/realm.dart';
 
 final Realm realm = RealmDB.realm;
 
-int testInputSync(int count) {
+Future<int> testInputSync(int count) async {
   realm.write(() => realm.deleteAll<TestEntityRealm>());
+  final dateTime = DateTime.now();
 
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
 
   for (int i = 0; i < count; i++) {
     realm.write(() => realm.add(
           TestEntityRealm(
             i,
             i.toString(),
-            startTime.add(Duration(seconds: i)),
+            dateTime,
           ),
         ));
   }
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testInputManySync(int count) {
+Future<int> testInputManySync(int count) async {
   realm.write(() => realm.deleteAll<TestEntityRealm>());
+  final dateTime = DateTime.now();
 
   List<TestEntityRealm> entities = [];
 
@@ -32,42 +35,39 @@ int testInputManySync(int count) {
       TestEntityRealm(
         i,
         i.toString(),
-        DateTime.now(),
+        dateTime,
       ),
     );
   }
 
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
 
   realm.write(() => realm.addAll(entities));
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testReadAll(int count) {
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testReadAll(int count) async {
+  final timer = Stopwatch()..start();
 
   realm.all<TestEntityRealm>();
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testDateQuery(int count) {
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testDateQuery(int count) async {
+  final timer = Stopwatch()..start();
 
   realm.query<TestEntityRealm>(r'dateTime <= $0', [DateTime.now()]);
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testRemoveQuery(int count) {
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testRemoveQuery(int count) async {
+  final timer = Stopwatch()..start();
 
   realm.write(() {
     final objects =
@@ -78,5 +78,6 @@ int testRemoveQuery(int count) {
     }
   });
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }

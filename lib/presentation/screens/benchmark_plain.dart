@@ -27,7 +27,9 @@ class BenchmarkPlain extends StatelessWidget {
     List<String> testResults = [];
 
     while (queue.isNotEmpty) {
-      int result = runTest(queue.first.testFuncion);
+      /// BROKEN
+      int result = 0;
+
       testResults.add('${queue.first.functionName}: $result ms');
       queue.removeFirst();
     }
@@ -47,7 +49,7 @@ class BenchmarkPlain extends StatelessWidget {
           for (int i = 0; i < testResults.length; i++)
             Padding(
               padding: EdgeInsets.only(
-                bottom: i % 3 == 2 ? 10 : 0,
+                bottom: i % 4 == 2 ? 10 : 0,
               ),
               child: Text(testResults[i]),
             ),

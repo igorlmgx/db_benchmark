@@ -1,5 +1,5 @@
 class TestItem {
-  final int Function(int) testFuncion;
+  final Future<int> Function(int) testFuncion;
   final String functionName;
 
   TestItem({

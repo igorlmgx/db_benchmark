@@ -2,26 +2,29 @@ import 'package:db_benchmark/entities/test_entity_isar.dart';
 import 'package:db_benchmark/main.dart';
 import 'package:isar/isar.dart';
 
-int testInputSync(int count) {
+Future<int> testInputSync(int count) async {
   isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
+  final dateTime = DateTime.now();
 
   isar.writeTxnSync(() {
     for (int i = 0; i < count; i++) {
       isar.testEntityIsars.putSync(
         TestEntityIsar(
           houseId: i.toString(),
-          dateTime: startTime.add(Duration(seconds: i)),
+          dateTime: dateTime,
         ),
       );
     }
   });
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testInputManySync(int count) {
+Future<int> testInputManySync(int count) async {
   isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
+  final dateTime = DateTime.now();
 
   List<TestEntityIsar> entities = [];
 
@@ -29,47 +32,44 @@ int testInputManySync(int count) {
     entities.add(
       TestEntityIsar(
         houseId: i.toString(),
-        dateTime: DateTime.now(),
+        dateTime: dateTime,
       ),
     );
   }
 
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
 
   isar.writeTxnSync(() => isar.testEntityIsars.putAllSync(entities));
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testReadAll(int count) {
-  isar.writeTxnSync(() => isar.testEntityIsars.clearSync());
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testReadAll(int count) async {
+  final timer = Stopwatch()..start();
 
   isar.testEntityIsars.where().findAll();
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testDateQuery(int count) {
-  testInputManySync(count);
+Future<int> testDateQuery(int count) async {
+  final timer = Stopwatch()..start();
 
-  final startTime = DateTime.now();
+  isar.testEntityIsars.filter().dateTimeLessThan(DateTime.now()).findAllSync();
 
-  isar.testEntityIsars.filter().dateTimeLessThan(startTime).findAllSync();
-
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testRemoveQuery(int count) {
-  testInputManySync(count);
+Future<int> testRemoveQuery(int count) async {
+  final timer = Stopwatch()..start();
 
-  final startTime = DateTime.now();
-
-  final query = isar.testEntityIsars.filter().dateTimeLessThan(startTime);
+  final query = isar.testEntityIsars.filter().dateTimeLessThan(DateTime.now());
 
   isar.writeTxnSync(() => query.deleteAllSync());
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }

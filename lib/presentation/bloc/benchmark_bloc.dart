@@ -71,8 +71,9 @@ class BenchmarkBloc extends Bloc<BenchmarkEvent, BenchmarkState> {
       await Future.delayed(const Duration(milliseconds: 50));
 
       try {
-        totalTime += event.testFunction(state.count);
+        totalTime += await event.testFunction(state.count);
       } catch (e) {
+        print('ERROR: ${e.toString()}');
         emit(
           BenchmarkFailed(
             errorMessage: e.toString(),

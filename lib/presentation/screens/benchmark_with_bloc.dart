@@ -25,12 +25,14 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
   }
 
   void runNextTest(BenchmarkBloc bloc) {
-    bloc.add(
-      RunBenchmark(
-        testFunction: _queue.first.testFuncion,
-        functionName: _queue.first.functionName,
-      ),
-    );
+    if (bloc.state is! BenchmarkFailed) {
+      bloc.add(
+        RunBenchmark(
+          testFunction: _queue.first.testFuncion,
+          functionName: _queue.first.functionName,
+        ),
+      );
+    }
   }
 
   @override
@@ -59,7 +61,7 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
               for (int i = 0; i < results.length; i++)
                 Padding(
                   padding: EdgeInsets.only(
-                    bottom: i % 3 == 2 ? 10 : 0,
+                    top: i % 4 == 0 ? 10 : 0,
                   ),
                   child: Text(
                       '${results.elementAt(i).key}: ${results.elementAt(i).value ?? ''}'),

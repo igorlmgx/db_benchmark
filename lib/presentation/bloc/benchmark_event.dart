@@ -13,7 +13,7 @@ class ChangeBenchmarkConfiguration extends BenchmarkEvent {
 }
 
 class RunBenchmark extends BenchmarkEvent {
-  final int Function(int) testFunction;
+  final Future<int> Function(int) testFunction;
   final String functionName;
   RunBenchmark({
     required this.testFunction,

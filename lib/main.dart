@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // Change this to use bloc state management to see progress
     // or use plain benchmark to maximum performance and memory isolation
-    const bool useBloc = false;
+    const bool useBloc = true;
 
     return Scaffold(
       appBar: AppBar(

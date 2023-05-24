@@ -4,24 +4,27 @@ import 'package:db_benchmark/objectbox.g.dart';
 
 final box = objectboxDB.store.box<TestEntityOBX>();
 
-int testInputSync(int count) {
+Future<int> testInputSync(int count) async {
   box.removeAll();
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
+  final dateTime = DateTime.now();
 
   for (int i = 0; i < count; i++) {
     box.put(
       TestEntityOBX(
         houseId: i.toString(),
-        dateTime: startTime.add(Duration(seconds: i)),
+        dateTime: dateTime,
       ),
     );
   }
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testInputManySync(int count) {
+Future<int> testInputManySync(int count) async {
   box.removeAll();
+  final dateTime = DateTime.now();
 
   List<TestEntityOBX> entities = [];
 
@@ -29,33 +32,30 @@ int testInputManySync(int count) {
     entities.add(
       TestEntityOBX(
         houseId: i.toString(),
-        dateTime: DateTime.now(),
+        dateTime: dateTime,
       ),
     );
   }
 
-  final startTime = DateTime.now();
+  final timer = Stopwatch()..start();
 
   box.putMany(entities);
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testReadAll(int count) {
-  box.removeAll();
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testReadAll(int count) async {
+  final timer = Stopwatch()..start();
 
   box.getAll();
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testDateQuery(int count) {
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testDateQuery(int count) async {
+  final timer = Stopwatch()..start();
 
   final query = box
       .query(TestEntityOBX_.dateTime
@@ -66,13 +66,12 @@ int testDateQuery(int count) {
 
   query.close();
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
 
-int testRemoveQuery(int count) {
-  testInputManySync(count);
-
-  final startTime = DateTime.now();
+Future<int> testRemoveQuery(int count) async {
+  final timer = Stopwatch()..start();
 
   final query = box
       .query(TestEntityOBX_.dateTime
@@ -83,5 +82,6 @@ int testRemoveQuery(int count) {
 
   query.close();
 
-  return DateTime.now().difference(startTime).inMilliseconds;
+  timer.stop();
+  return timer.elapsedMilliseconds;
 }
