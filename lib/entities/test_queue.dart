@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:db_benchmark/benchmarks/objectbox_benchmark.dart' as obx;
 import 'package:db_benchmark/benchmarks/realm_benchmark.dart' as rlm;
 import 'package:db_benchmark/benchmarks/isar_benchmark.dart' as isr;
+import 'package:db_benchmark/benchmarks/sqflite_benchmark.dart' as sqf;
 import 'package:db_benchmark/benchmarks/shared_preferences_benchmark.dart'
     as shr;
 import 'package:db_benchmark/entities/test_item.dart';
@@ -14,22 +15,27 @@ class TestQueue {
       'OBX inputSync': null,
       'RLM inputSync': null,
       'ISR inputSync': null,
+      'SQF inputSync': null,
       'SHR inputManySync': null,
       'OBX inputManySync': null,
       'RLM inputManySync': null,
       'ISR inputManySync': null,
+      'SQF inputManySync': null,
       'SHR readAll': null,
       'OBX readAll': null,
       'RLM readAll': null,
       'ISR readAll': null,
+      'SQF readAll': null,
       'SHR dateQuery': null,
       'OBX dateQuery': null,
       'RLM dateQuery': null,
       'ISR dateQuery': null,
+      'SQF dateQuery': null,
       'SHR removeQuery': null,
       'OBX removeQuery': null,
       'RLM removeQuery': null,
       'ISR removeQuery': null,
+      'SQF removeQuery': null,
     };
   }
 
@@ -54,6 +60,10 @@ class TestQueue {
         functionName: 'ISR inputSync',
       ),
       TestItem(
+        testFuncion: sqf.testInputSync,
+        functionName: 'SQF inputSync',
+      ),
+      TestItem(
         testFuncion: shr.testInputManySync,
         functionName: 'SHR inputManySync',
       ),
@@ -68,6 +78,10 @@ class TestQueue {
       TestItem(
         testFuncion: isr.testInputManySync,
         functionName: 'ISR inputManySync',
+      ),
+      TestItem(
+        testFuncion: sqf.testInputManySync,
+        functionName: 'SQF inputManySync',
       ),
       TestItem(
         testFuncion: shr.testReadAll,
@@ -86,6 +100,10 @@ class TestQueue {
         functionName: 'ISR readAll',
       ),
       TestItem(
+        testFuncion: sqf.testReadAll,
+        functionName: 'SQF readAll',
+      ),
+      TestItem(
         testFuncion: shr.testDateQuery,
         functionName: 'SHR dateQuery',
       ),
@@ -102,6 +120,10 @@ class TestQueue {
         functionName: 'ISR dateQuery',
       ),
       TestItem(
+        testFuncion: sqf.testDateQuery,
+        functionName: 'SQF dateQuery',
+      ),
+      TestItem(
         testFuncion: shr.testRemoveQuery,
         functionName: 'SHR removeQuery',
       ),
@@ -116,6 +138,10 @@ class TestQueue {
       TestItem(
         testFuncion: isr.testRemoveQuery,
         functionName: 'ISR removeQuery',
+      ),
+      TestItem(
+        testFuncion: sqf.testRemoveQuery,
+        functionName: 'SQF removeQuery',
       ),
     ]);
 

@@ -10,14 +10,15 @@ class TestEntitySqflite {
   factory TestEntitySqflite.fromJson(Map<String, Object?> json) {
     return TestEntitySqflite(
       houseId: json['houseId'] as String,
-      dateTime: DateTime.fromMillisecondsSinceEpoch(json['dateTime'] as int),
+      dateTime:
+          DateTime.fromMillisecondsSinceEpoch(json['visualizedAt'] as int),
     );
   }
 
   Map<String, Object?> toJson() {
     return {
       'houseId': houseId,
-      'dateTime': dateTime.millisecondsSinceEpoch,
+      'visualizedAt': dateTime.millisecondsSinceEpoch,
     };
   }
 }

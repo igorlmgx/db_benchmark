@@ -12,9 +12,9 @@ Future<int> testInputSync(int count) async {
   final timer = Stopwatch()..start();
   final dateTime = DateTime.now();
 
-  sqflite.transaction((txn) async {
+  await sqflite.transaction((txn) async {
     for (int i = 0; i < count; i++) {
-      await sqflite.insert(
+      await txn.insert(
         SqfliteDB.visualizedPinsTable,
         TestEntitySqflite(
           houseId: i.toString(),

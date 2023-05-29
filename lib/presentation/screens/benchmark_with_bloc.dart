@@ -77,7 +77,7 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
               for (int i = 0; i < results.length; i++)
                 Padding(
                   padding: EdgeInsets.only(
-                    top: i % 4 == 0 ? 10 : 0,
+                    top: i % 5 == 0 ? 10 : 0,
                   ),
                   child: Text(
                       '${results.elementAt(i).key}: ${results.elementAt(i).value ?? ''}'),
