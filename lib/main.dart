@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:db_benchmark/databases/sqflite.dart';
 
 late ObjectBox objectboxDB;
 late Isar isar;
@@ -22,7 +23,7 @@ void main() async {
 
   objectboxDB = await ObjectBox.create();
   isar = await openIsar();
-  sqflite = await openDatabase('sqflite_demo.db');
+  sqflite = await SqfliteDB.open();
 
   runApp(const MyApp());
 }
