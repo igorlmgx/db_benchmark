@@ -5,10 +5,10 @@ part 'benchmark_state.dart';
 
 class BenchmarkBloc extends Bloc<BenchmarkEvent, BenchmarkState> {
   BenchmarkBloc({
-    required Map<String, dynamic> benchmarkResults,
+    required Map<String, dynamic> benchmarkPlaceholder,
   }) : super(
           BenchmarkInitial(
-            benchmarkResults: benchmarkResults,
+            benchmarkResults: benchmarkPlaceholder,
             count: 1000,
             iterations: 1,
           ),

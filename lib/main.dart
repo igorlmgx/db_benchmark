@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: useBloc
           ? BlocProvider(
               create: (_) => BenchmarkBloc(
-                benchmarkResults: TestQueue.getTestList,
+                benchmarkPlaceholder: TestQueue.getTestListPlaceholder,
               ),
               child: BenchmarkWithBloc(
                 queue: TestQueue.testQueue,

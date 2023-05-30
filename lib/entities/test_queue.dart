@@ -10,14 +10,14 @@ import 'package:db_benchmark/databases/sqflite.dart';
 import 'package:db_benchmark/entities/test_item.dart';
 
 class TestQueue {
-  static Map<String, dynamic> get getTestList {
+  static Map<String, dynamic> get getTestListPlaceholder {
     return {
       'SHR inputSync': null,
       'OBX inputSync': null,
       'RLM inputSync': null,
       'ISR inputSync': null,
       'SQF inputSync': null,
-      'SQF Idx Id inputSync': null,
+      'SQF Idx HouseID inputSync': null,
       'SQF Idx Date inputSync': null,
       'SQF Idx Both inputSync': null,
       'SHR inputManySync': null,
@@ -25,7 +25,7 @@ class TestQueue {
       'RLM inputManySync': null,
       'ISR inputManySync': null,
       'SQF inputManySync': null,
-      'SQF Idx Id inputManySync': null,
+      'SQF Idx HouseID inputManySync': null,
       'SQF Idx Date inputManySync': null,
       'SQF Idx Both inputManySync': null,
       'SHR readAll': null,
@@ -33,7 +33,7 @@ class TestQueue {
       'RLM readAll': null,
       'ISR readAll': null,
       'SQF readAll': null,
-      'SQF Idx Id readAll': null,
+      'SQF Idx HouseID readAll': null,
       'SQF Idx Date readAll': null,
       'SQF Idx Both readAll': null,
       'SHR dateQuery': null,
@@ -41,7 +41,7 @@ class TestQueue {
       'RLM dateQuery': null,
       'ISR dateQuery': null,
       'SQF dateQuery': null,
-      'SQF Idx Id dateQuery': null,
+      'SQF Idx HouseID dateQuery': null,
       'SQF Idx Date dateQuery': null,
       'SQF Idx Both dateQuery': null,
       'SHR removeQuery': null,
@@ -49,7 +49,7 @@ class TestQueue {
       'RLM removeQuery': null,
       'ISR removeQuery': null,
       'SQF removeQuery': null,
-      'SQF Idx Id removeQuery': null,
+      'SQF Idx HouseID removeQuery': null,
       'SQF Idx Date removeQuery': null,
       'SQF Idx Both removeQuery': null,
     };
@@ -119,17 +119,17 @@ class TestQueue {
       TestItem(
         testFuncion: (count) => sqf.testInputManySync(
             count, SqfliteDB.visualizedPinsTableIdxHouseId),
-        functionName: 'SQF Idx HouseID inputSync',
+        functionName: 'SQF Idx HouseID inputManySync',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testInputManySync(count, SqfliteDB.visualizedPinsTableIdxDate),
-        functionName: 'SQF Idx Date inputSync',
+        functionName: 'SQF Idx Date inputManySync',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testInputManySync(count, SqfliteDB.visualizedPinsTableIdxBoth),
-        functionName: 'SQF Idx Both inputSync',
+        functionName: 'SQF Idx Both inputManySync',
       ),
       TestItem(
         testFuncion: shr.testReadAll,
@@ -155,17 +155,17 @@ class TestQueue {
       TestItem(
         testFuncion: (count) =>
             sqf.testReadAll(count, SqfliteDB.visualizedPinsTableIdxHouseId),
-        functionName: 'SQF Idx HouseID inputSync',
+        functionName: 'SQF Idx HouseID readAll',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testReadAll(count, SqfliteDB.visualizedPinsTableIdxDate),
-        functionName: 'SQF Idx Date inputSync',
+        functionName: 'SQF Idx Date readAll',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testReadAll(count, SqfliteDB.visualizedPinsTableIdxBoth),
-        functionName: 'SQF Idx Both inputSync',
+        functionName: 'SQF Idx Both readAll',
       ),
       TestItem(
         testFuncion: shr.testDateQuery,
@@ -191,17 +191,17 @@ class TestQueue {
       TestItem(
         testFuncion: (count) =>
             sqf.testDateQuery(count, SqfliteDB.visualizedPinsTableIdxHouseId),
-        functionName: 'SQF Idx HouseID inputSync',
+        functionName: 'SQF Idx HouseID dateQuery',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testDateQuery(count, SqfliteDB.visualizedPinsTableIdxDate),
-        functionName: 'SQF Idx Date inputSync',
+        functionName: 'SQF Idx Date dateQuery',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testDateQuery(count, SqfliteDB.visualizedPinsTableIdxBoth),
-        functionName: 'SQF Idx Both inputSync',
+        functionName: 'SQF Idx Both dateQuery',
       ),
       TestItem(
         testFuncion: shr.testRemoveQuery,
@@ -227,17 +227,17 @@ class TestQueue {
       TestItem(
         testFuncion: (count) =>
             sqf.testRemoveQuery(count, SqfliteDB.visualizedPinsTableIdxHouseId),
-        functionName: 'SQF Idx HouseID inputSync',
+        functionName: 'SQF Idx HouseID removeQuery',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testRemoveQuery(count, SqfliteDB.visualizedPinsTableIdxDate),
-        functionName: 'SQF Idx Date inputSync',
+        functionName: 'SQF Idx Date removeQuery',
       ),
       TestItem(
         testFuncion: (count) =>
             sqf.testRemoveQuery(count, SqfliteDB.visualizedPinsTableIdxBoth),
-        functionName: 'SQF Idx Both inputSync',
+        functionName: 'SQF Idx Both removeQuery',
       ),
     ]);
 
