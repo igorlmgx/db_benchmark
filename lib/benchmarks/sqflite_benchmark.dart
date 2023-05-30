@@ -1,21 +1,20 @@
-import 'package:db_benchmark/databases/sqflite.dart';
 import 'package:db_benchmark/entities/test_entity_sqflite.dart';
 import 'package:db_benchmark/main.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<int> deleteFromTable() async {
-  return sqflite.rawDelete('DELETE FROM ${SqfliteDB.visualizedPinsTable}');
+Future<int> deleteFromTable(String table) async {
+  return sqflite.rawDelete('DELETE FROM $table');
 }
 
-Future<int> testInputSync(int count) async {
-  await deleteFromTable();
+Future<int> testInputSync(int count, String table) async {
+  await deleteFromTable(table);
   final timer = Stopwatch()..start();
   final dateTime = DateTime.now();
 
   await sqflite.transaction((txn) async {
     for (int i = 0; i < count; i++) {
       await txn.insert(
-        SqfliteDB.visualizedPinsTable,
+        table,
         TestEntitySqflite(
           houseId: i.toString(),
           dateTime: dateTime,
@@ -29,8 +28,8 @@ Future<int> testInputSync(int count) async {
   return timer.elapsedMilliseconds;
 }
 
-Future<int> testInputManySync(int count) async {
-  await deleteFromTable();
+Future<int> testInputManySync(int count, String table) async {
+  await deleteFromTable(table);
   final dateTime = DateTime.now();
 
   List<String> entities = [];
@@ -45,7 +44,7 @@ Future<int> testInputManySync(int count) async {
   final timer = Stopwatch()..start();
 
   await sqflite.rawInsert('''
-    INSERT INTO ${SqfliteDB.visualizedPinsTable}
+    INSERT INTO $table
       (houseId, visualizedAt)
     VALUES
       ${entities.join(', ')};
@@ -55,20 +54,20 @@ Future<int> testInputManySync(int count) async {
   return timer.elapsedMilliseconds;
 }
 
-Future<int> testReadAll(int count) async {
+Future<int> testReadAll(int count, String table) async {
   final timer = Stopwatch()..start();
 
-  await sqflite.rawQuery('SELECT * FROM ${SqfliteDB.visualizedPinsTable}');
+  await sqflite.rawQuery('SELECT * FROM $table');
 
   timer.stop();
   return timer.elapsedMilliseconds;
 }
 
-Future<int> testDateQuery(int count) async {
+Future<int> testDateQuery(int count, String table) async {
   final timer = Stopwatch()..start();
 
   await sqflite.query(
-    SqfliteDB.visualizedPinsTable,
+    table,
     columns: ['id', 'houseId', 'visualizedAt'],
     where: 'visualizedAt < ?',
     whereArgs: [DateTime.now().millisecondsSinceEpoch],
@@ -78,11 +77,11 @@ Future<int> testDateQuery(int count) async {
   return timer.elapsedMilliseconds;
 }
 
-Future<int> testRemoveQuery(int count) async {
+Future<int> testRemoveQuery(int count, String table) async {
   final timer = Stopwatch()..start();
 
   await sqflite.delete(
-    SqfliteDB.visualizedPinsTable,
+    table,
     where: 'visualizedAt < ?',
     whereArgs: [DateTime.now().millisecondsSinceEpoch],
   );

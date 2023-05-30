@@ -71,44 +71,48 @@ class _BenchmarkWithBlocState extends State<BenchmarkWithBloc> {
         final results = state.benchmarkResults.entries;
         return Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              for (int i = 0; i < results.length; i++)
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: i % 5 == 0 ? 10 : 0,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (int i = 0; i < results.length; i++)
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: i % 8 == 0 ? 10 : 0,
+                      ),
+                      child: Text(
+                          '${results.elementAt(i).key}: ${results.elementAt(i).value ?? ''}'),
+                    ),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  child: Text(
-                      '${results.elementAt(i).key}: ${results.elementAt(i).value ?? ''}'),
-                ),
-              const SizedBox(
-                height: 20,
+                  if (state is BenchmarkInitial || state is BenchmarkFinished)
+                    const BenchmarkConfigurationWidget(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  if (state is BenchmarkInitial)
+                    TextButton(
+                      onPressed: () => runNextTest(benchmarkBloc),
+                      child: const Text(
+                        'Run tests',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  if (state is BenchmarkFinished || state is BenchmarkFailed)
+                    TextButton(
+                      onPressed: () => setState(() {
+                        _queue = TestQueue.testQueue;
+                        runNextTest(benchmarkBloc);
+                      }),
+                      child: const Text(
+                        'Run tests again',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                ],
               ),
-              if (state is BenchmarkInitial || state is BenchmarkFinished)
-                const BenchmarkConfigurationWidget(),
-              const SizedBox(
-                height: 20,
-              ),
-              if (state is BenchmarkInitial)
-                TextButton(
-                  onPressed: () => runNextTest(benchmarkBloc),
-                  child: const Text(
-                    'Run tests',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-              if (state is BenchmarkFinished || state is BenchmarkFailed)
-                TextButton(
-                  onPressed: () => setState(() {
-                    _queue = TestQueue.testQueue;
-                    runNextTest(benchmarkBloc);
-                  }),
-                  child: const Text(
-                    'Run tests again',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
             ],
           ),
         );
